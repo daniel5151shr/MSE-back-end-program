@@ -2,8 +2,6 @@ package com.qst.mes.core.md.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.qst.mes.common.constant.UserConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +22,10 @@ import com.qst.mes.common.utils.poi.ExcelUtil;
 import com.qst.mes.common.core.page.TableDataInfo;
 
 /**
- * 车间Controller
+ * 车间管理Controller
  * 
  * @author yinjinlu
- * @date 2022-05-07
+ * @date 2024-07-14
  */
 @RestController
 @RequestMapping("/mes/md/workshop")
@@ -37,8 +35,9 @@ public class MdWorkshopController extends BaseController
     private IMdWorkshopService mdWorkshopService;
 
     /**
-     * 查询车间列表
+     * 查询车间管理列表
      */
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:list')")
     @GetMapping("/list")
     public TableDataInfo list(MdWorkshop mdWorkshop)
     {
@@ -48,34 +47,22 @@ public class MdWorkshopController extends BaseController
     }
 
     /**
-     * 获取所有可用车间
-     * @return
+     * 导出车间管理列表
      */
-    @GetMapping("/listAll")
-    public AjaxResult listAll(){
-        MdWorkshop mdWorkshop = new MdWorkshop();
-        mdWorkshop.setEnableFlag("Y");
-        List<MdWorkshop> list = mdWorkshopService.selectMdWorkshopList(mdWorkshop);
-        return AjaxResult.success(list);
-    }
-
-    /**
-     * 导出车间列表
-     */
-    @PreAuthorize("@ss.hasPermi('mes:md:workshop:export')")
-    @Log(title = "车间", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:export')")
+    @Log(title = "车间管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MdWorkshop mdWorkshop)
     {
         List<MdWorkshop> list = mdWorkshopService.selectMdWorkshopList(mdWorkshop);
         ExcelUtil<MdWorkshop> util = new ExcelUtil<MdWorkshop>(MdWorkshop.class);
-        util.exportExcel(response, list, "车间数据");
+        util.exportExcel(response, list, "车间管理数据");
     }
 
     /**
-     * 获取车间详细信息
+     * 获取车间管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:workshop:query')")
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:query')")
     @GetMapping(value = "/{workshopId}")
     public AjaxResult getInfo(@PathVariable("workshopId") Long workshopId)
     {
@@ -83,44 +70,32 @@ public class MdWorkshopController extends BaseController
     }
 
     /**
-     * 新增车间
+     * 新增车间管理
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:workshop:add')")
-    @Log(title = "车间", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:add')")
+    @Log(title = "车间管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MdWorkshop mdWorkshop)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdWorkshopService.checkWorkshopCodeUnique(mdWorkshop))){
-            return AjaxResult.error("车间编码已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdWorkshopService.checkWorkshopNameUnique(mdWorkshop))){
-            return AjaxResult.error("车间名称已存在！");
-        }
         return toAjax(mdWorkshopService.insertMdWorkshop(mdWorkshop));
     }
 
     /**
-     * 修改车间
+     * 修改车间管理
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:workshop:edit')")
-    @Log(title = "车间", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:edit')")
+    @Log(title = "车间管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MdWorkshop mdWorkshop)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdWorkshopService.checkWorkshopCodeUnique(mdWorkshop))){
-            return AjaxResult.error("车间编码已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdWorkshopService.checkWorkshopNameUnique(mdWorkshop))){
-            return AjaxResult.error("车间名称已存在！");
-        }
         return toAjax(mdWorkshopService.updateMdWorkshop(mdWorkshop));
     }
 
     /**
-     * 删除车间
+     * 删除车间管理
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:workshop:remove')")
-    @Log(title = "车间", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:remove')")
+    @Log(title = "车间管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{workshopIds}")
     public AjaxResult remove(@PathVariable Long[] workshopIds)
     {

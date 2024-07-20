@@ -6,8 +6,8 @@ import com.qst.mes.core.md.domain.MdClient;
 /**
  * 客户Mapper接口
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 public interface MdClientMapper 
 {
@@ -26,28 +26,6 @@ public interface MdClientMapper
      * @return 客户集合
      */
     public List<MdClient> selectMdClientList(MdClient mdClient);
-
-    /**
-     * 检查客户编码是否重复
-     * @param mdClient
-     * @return
-     */
-    public MdClient checkClientCodeUnique(MdClient mdClient);
-
-    /**
-     * 检查客户名称是否重复
-     * @param mdClient
-     * @return
-     */
-    public MdClient checkClientNameUnique(MdClient mdClient);
-
-    /**
-     * 检查客户简称是否重复
-     * @param mdClient
-     * @return
-     */
-    public MdClient checkClientNickUnique(MdClient mdClient);
-
 
     /**
      * 新增客户

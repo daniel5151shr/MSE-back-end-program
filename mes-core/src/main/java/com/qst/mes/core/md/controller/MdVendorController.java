@@ -2,10 +2,6 @@ package com.qst.mes.core.md.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.qst.mes.common.constant.UserConstants;
-import com.qst.mes.common.core.domain.entity.SysUser;
-import com.qst.mes.core.wm.utils.WmBarCodeUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +20,12 @@ import com.qst.mes.core.md.domain.MdVendor;
 import com.qst.mes.core.md.service.IMdVendorService;
 import com.qst.mes.common.utils.poi.ExcelUtil;
 import com.qst.mes.common.core.page.TableDataInfo;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 供应商Controller
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 @RestController
 @RequestMapping("/mes/md/vendor")
@@ -39,12 +34,10 @@ public class MdVendorController extends BaseController
     @Autowired
     private IMdVendorService mdVendorService;
 
-    @Autowired
-    private WmBarCodeUtil barCodeUtil;
-
     /**
      * 查询供应商列表
      */
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:list')")
     @GetMapping("/list")
     public TableDataInfo list(MdVendor mdVendor)
     {
@@ -56,7 +49,7 @@ public class MdVendorController extends BaseController
     /**
      * 导出供应商列表
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:vendor:export')")
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:export')")
     @Log(title = "供应商", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MdVendor mdVendor)
@@ -66,30 +59,10 @@ public class MdVendorController extends BaseController
         util.exportExcel(response, list, "供应商数据");
     }
 
-    @PostMapping("/importTemplate")
-    public void importTemplate(HttpServletResponse response)
-    {
-        ExcelUtil<MdVendor> util = new ExcelUtil<MdVendor>(MdVendor.class);
-        util.importTemplateExcel(response, "供应商数据");
-    }
-
-
-    @Log(title = "供应商", businessType = BusinessType.IMPORT)
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
-    @PostMapping("/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
-    {
-        ExcelUtil<MdVendor> util = new ExcelUtil<MdVendor>(MdVendor.class);
-        List<MdVendor> vendorList = util.importExcel(file.getInputStream());
-        String operName = getUsername();
-        String message = mdVendorService.importVendor(vendorList, updateSupport, operName);
-        return AjaxResult.success(message);
-    }
-
     /**
      * 获取供应商详细信息
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:vendor:query')")
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:query')")
     @GetMapping(value = "/{vendorId}")
     public AjaxResult getInfo(@PathVariable("vendorId") Long vendorId)
     {
@@ -99,51 +72,29 @@ public class MdVendorController extends BaseController
     /**
      * 新增供应商
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:vendor:add')")
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:add')")
     @Log(title = "供应商", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MdVendor mdVendor)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorCodeUnique(mdVendor))){
-            return AjaxResult.error("供应商编码已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorNameUnique(mdVendor))){
-            return AjaxResult.error("供应商名称已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorNickUnique(mdVendor))){
-            return AjaxResult.error("供应商简称已存在！");
-        }
-
-        mdVendorService.insertMdVendor(mdVendor);
-        barCodeUtil.generateBarCode(UserConstants.BARCODE_TYPE_VENDOR,mdVendor.getVendorId(),mdVendor.getVendorCode(),mdVendor.getVendorName());
-
-        return AjaxResult.success(mdVendor.getVendorId());
+        return toAjax(mdVendorService.insertMdVendor(mdVendor));
     }
 
     /**
      * 修改供应商
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:vendor:edit')")
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:edit')")
     @Log(title = "供应商", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MdVendor mdVendor)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorCodeUnique(mdVendor))){
-            return AjaxResult.error("供应商编码已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorNameUnique(mdVendor))){
-            return AjaxResult.error("供应商名称已存在！");
-        }
-        if(UserConstants.NOT_UNIQUE.equals(mdVendorService.checkVendorNickUnique(mdVendor))){
-            return AjaxResult.error("供应商简称已存在！");
-        }
         return toAjax(mdVendorService.updateMdVendor(mdVendor));
     }
 
     /**
      * 删除供应商
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:vendor:remove')")
+    @PreAuthorize("@ss.hasPermi('mes/md:vendor:remove')")
     @Log(title = "供应商", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{vendorIds}")
     public AjaxResult remove(@PathVariable Long[] vendorIds)

@@ -2,9 +2,6 @@ package com.qst.mes.core.md.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.qst.mes.common.constant.UserConstants;
-import com.qst.mes.core.wm.utils.WmBarCodeUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +24,8 @@ import com.qst.mes.common.core.page.TableDataInfo;
 /**
  * 客户Controller
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 @RestController
 @RequestMapping("/mes/md/client")
@@ -37,12 +34,10 @@ public class MdClientController extends BaseController
     @Autowired
     private IMdClientService mdClientService;
 
-    @Autowired
-    private WmBarCodeUtil barCodeUtil;
-
     /**
      * 查询客户列表
      */
+    @PreAuthorize("@ss.hasPermi('mes/md:client:list')")
     @GetMapping("/list")
     public TableDataInfo list(MdClient mdClient)
     {
@@ -54,7 +49,7 @@ public class MdClientController extends BaseController
     /**
      * 导出客户列表
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:client:export')")
+    @PreAuthorize("@ss.hasPermi('mes/md:client:export')")
     @Log(title = "客户", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MdClient mdClient)
@@ -67,7 +62,7 @@ public class MdClientController extends BaseController
     /**
      * 获取客户详细信息
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:client:query')")
+    @PreAuthorize("@ss.hasPermi('mes/md:client:query')")
     @GetMapping(value = "/{clientId}")
     public AjaxResult getInfo(@PathVariable("clientId") Long clientId)
     {
@@ -77,55 +72,29 @@ public class MdClientController extends BaseController
     /**
      * 新增客户
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:client:add')")
+    @PreAuthorize("@ss.hasPermi('mes/md:client:add')")
     @Log(title = "客户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MdClient mdClient)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientCodeUnique(mdClient))){
-            return AjaxResult.error("客户编码已存在！");
-        }
-
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientNameUnique(mdClient))){
-            return AjaxResult.error("客户名称已存在！");
-        }
-
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientNickUnique(mdClient))){
-            return AjaxResult.error("客户简称已存在！");
-        }
-
-        mdClientService.insertMdClient(mdClient);
-        barCodeUtil.generateBarCode(UserConstants.BARCODE_TYPE_CLIENT,mdClient.getClientId(),mdClient.getClientCode(),mdClient.getClientName());
-
-        return AjaxResult.success(mdClient.getClientId());
+        return toAjax(mdClientService.insertMdClient(mdClient));
     }
 
     /**
      * 修改客户
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:client:edit')")
+    @PreAuthorize("@ss.hasPermi('mes/md:client:edit')")
     @Log(title = "客户", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MdClient mdClient)
     {
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientCodeUnique(mdClient))){
-            return AjaxResult.error("客户编码已存在！");
-        }
-
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientNameUnique(mdClient))){
-            return AjaxResult.error("客户名称已存在！");
-        }
-
-        if(UserConstants.NOT_UNIQUE.equals(mdClientService.checkClientNickUnique(mdClient))){
-            return AjaxResult.error("客户简称已存在！");
-        }
         return toAjax(mdClientService.updateMdClient(mdClient));
     }
 
     /**
      * 删除客户
      */
-    @PreAuthorize("@ss.hasPermi('mes:md:client:remove')")
+    @PreAuthorize("@ss.hasPermi('mes/md:client:remove')")
     @Log(title = "客户", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{clientIds}")
     public AjaxResult remove(@PathVariable Long[] clientIds)

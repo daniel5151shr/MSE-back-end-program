@@ -1,24 +1,21 @@
 package com.qst.mes.core.md.service.impl;
 
 import java.util.List;
-
-import com.qst.mes.common.constant.UserConstants;
 import com.qst.mes.common.utils.DateUtils;
-import com.qst.mes.common.utils.StringUtils;
-import com.qst.mes.core.md.service.IMdClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.qst.mes.core.md.mapper.MdClientMapper;
 import com.qst.mes.core.md.domain.MdClient;
+import com.qst.mes.core.md.service.IMdClientService;
 
 /**
  * 客户Service业务层处理
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 @Service
-public class MdClientServiceImpl implements IMdClientService
+public class MdClientServiceImpl implements IMdClientService 
 {
     @Autowired
     private MdClientMapper mdClientMapper;
@@ -45,36 +42,6 @@ public class MdClientServiceImpl implements IMdClientService
     public List<MdClient> selectMdClientList(MdClient mdClient)
     {
         return mdClientMapper.selectMdClientList(mdClient);
-    }
-
-    @Override
-    public String checkClientCodeUnique(MdClient mdClient) {
-        MdClient client = mdClientMapper.checkClientCodeUnique(mdClient);
-        Long clientId = mdClient.getClientId()==null?-1L:mdClient.getClientId();
-        if(StringUtils.isNotNull(client) && client.getClientId().longValue() !=clientId.longValue()){
-            return UserConstants.NOT_UNIQUE;
-        }
-        return UserConstants.UNIQUE;
-    }
-
-    @Override
-    public String checkClientNameUnique(MdClient mdClient) {
-        MdClient client = mdClientMapper.checkClientNameUnique(mdClient);
-        Long clientId = mdClient.getClientId()==null?-1L:mdClient.getClientId();
-        if(StringUtils.isNotNull(client) && client.getClientId().longValue() !=clientId.longValue()){
-            return UserConstants.NOT_UNIQUE;
-        }
-        return UserConstants.UNIQUE;
-    }
-
-    @Override
-    public String checkClientNickUnique(MdClient mdClient) {
-        MdClient client = mdClientMapper.checkClientNickUnique(mdClient);
-        Long clientId = mdClient.getClientId()==null?-1L:mdClient.getClientId();
-        if(StringUtils.isNotNull(client) && client.getClientId().longValue() !=clientId.longValue()){
-            return UserConstants.NOT_UNIQUE;
-        }
-        return UserConstants.UNIQUE;
     }
 
     /**

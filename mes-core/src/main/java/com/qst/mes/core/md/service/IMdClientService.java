@@ -6,8 +6,8 @@ import com.qst.mes.core.md.domain.MdClient;
 /**
  * 客户Service接口
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 public interface IMdClientService 
 {
@@ -26,12 +26,6 @@ public interface IMdClientService
      * @return 客户集合
      */
     public List<MdClient> selectMdClientList(MdClient mdClient);
-
-    public String checkClientCodeUnique(MdClient mdClient);
-
-    public String checkClientNameUnique(MdClient mdClient);
-
-    public String checkClientNickUnique(MdClient mdClient);
 
     /**
      * 新增客户

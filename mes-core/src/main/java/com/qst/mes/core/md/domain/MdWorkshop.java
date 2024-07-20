@@ -7,10 +7,10 @@ import com.qst.mes.common.annotation.Excel;
 import com.qst.mes.common.core.domain.BaseEntity;
 
 /**
- * 车间对象 md_workshop
+ * 车间管理对象 md_workshop
  * 
  * @author yinjinlu
- * @date 2022-05-07
+ * @date 2024-07-14
  */
 public class MdWorkshop extends BaseEntity
 {
@@ -38,18 +38,6 @@ public class MdWorkshop extends BaseEntity
     /** 是否启用 */
     @Excel(name = "是否启用")
     private String enableFlag;
-
-    /** 预留字段1 */
-    private String attr1;
-
-    /** 预留字段2 */
-    private String attr2;
-
-    /** 预留字段3 */
-    private Long attr3;
-
-    /** 预留字段4 */
-    private Long attr4;
 
     public void setWorkshopId(Long workshopId) 
     {
@@ -105,42 +93,6 @@ public class MdWorkshop extends BaseEntity
     {
         return enableFlag;
     }
-    public void setAttr1(String attr1) 
-    {
-        this.attr1 = attr1;
-    }
-
-    public String getAttr1() 
-    {
-        return attr1;
-    }
-    public void setAttr2(String attr2) 
-    {
-        this.attr2 = attr2;
-    }
-
-    public String getAttr2() 
-    {
-        return attr2;
-    }
-    public void setAttr3(Long attr3) 
-    {
-        this.attr3 = attr3;
-    }
-
-    public Long getAttr3() 
-    {
-        return attr3;
-    }
-    public void setAttr4(Long attr4) 
-    {
-        this.attr4 = attr4;
-    }
-
-    public Long getAttr4() 
-    {
-        return attr4;
-    }
 
     @Override
     public String toString() {
@@ -151,11 +103,6 @@ public class MdWorkshop extends BaseEntity
             .append("area", getArea())
             .append("charge", getCharge())
             .append("enableFlag", getEnableFlag())
-            .append("remark", getRemark())
-            .append("attr1", getAttr1())
-            .append("attr2", getAttr2())
-            .append("attr3", getAttr3())
-            .append("attr4", getAttr4())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

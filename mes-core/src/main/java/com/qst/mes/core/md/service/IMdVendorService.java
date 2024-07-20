@@ -6,8 +6,8 @@ import com.qst.mes.core.md.domain.MdVendor;
 /**
  * 供应商Service接口
  * 
- * @author yinjinlu
- * @date 2022-05-06
+ * @author qst
+ * @date 2024-07-14
  */
 public interface IMdVendorService 
 {
@@ -26,20 +26,6 @@ public interface IMdVendorService
      * @return 供应商集合
      */
     public List<MdVendor> selectMdVendorList(MdVendor mdVendor);
-
-    public String checkVendorCodeUnique(MdVendor mdVendor);
-    public String checkVendorNameUnique(MdVendor mdVendor);
-    public String checkVendorNickUnique(MdVendor mdVendor);
-
-    /**
-     * 导入供应商信息
-     * @param vendorList
-     * @param isUpdateSupport
-     * @param operName
-     * @return
-     */
-    public String importVendor(List<MdVendor> vendorList, Boolean isUpdateSupport, String operName);
-
 
     /**
      * 新增供应商

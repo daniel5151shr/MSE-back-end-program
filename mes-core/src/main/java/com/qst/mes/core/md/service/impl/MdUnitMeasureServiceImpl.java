@@ -1,31 +1,30 @@
 package com.qst.mes.core.md.service.impl;
 
 import java.util.List;
-
-import com.qst.mes.core.md.service.IMdUnitMeasureService;
 import com.qst.mes.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.qst.mes.core.md.mapper.MdUnitMeasureMapper;
 import com.qst.mes.core.md.domain.MdUnitMeasure;
+import com.qst.mes.core.md.service.IMdUnitMeasureService;
 
 /**
- * 单位Service业务层处理
+ * 计量单位管理Service业务层处理
  * 
- * @author ruoyi
- * @date 2022-04-27
+ * @author yinjinlu
+ * @date 2024-07-06
  */
 @Service
-public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
+public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService 
 {
     @Autowired
     private MdUnitMeasureMapper mdUnitMeasureMapper;
 
     /**
-     * 查询单位
+     * 查询计量单位管理
      * 
-     * @param measureId 单位主键
-     * @return 单位
+     * @param measureId 计量单位管理主键
+     * @return 计量单位管理
      */
     @Override
     public MdUnitMeasure selectMdUnitMeasureByMeasureId(Long measureId)
@@ -34,10 +33,10 @@ public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
     }
 
     /**
-     * 查询单位列表
+     * 查询计量单位管理列表
      * 
-     * @param mdUnitMeasure 单位
-     * @return 单位
+     * @param mdUnitMeasure 计量单位管理
+     * @return 计量单位管理
      */
     @Override
     public List<MdUnitMeasure> selectMdUnitMeasureList(MdUnitMeasure mdUnitMeasure)
@@ -46,9 +45,9 @@ public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
     }
 
     /**
-     * 新增单位
+     * 新增计量单位管理
      * 
-     * @param mdUnitMeasure 单位
+     * @param mdUnitMeasure 计量单位管理
      * @return 结果
      */
     @Override
@@ -59,9 +58,9 @@ public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
     }
 
     /**
-     * 修改单位
+     * 修改计量单位管理
      * 
-     * @param mdUnitMeasure 单位
+     * @param mdUnitMeasure 计量单位管理
      * @return 结果
      */
     @Override
@@ -72,9 +71,9 @@ public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
     }
 
     /**
-     * 批量删除单位
+     * 批量删除计量单位管理
      * 
-     * @param measureIds 需要删除的单位主键
+     * @param measureIds 需要删除的计量单位管理主键
      * @return 结果
      */
     @Override
@@ -84,9 +83,9 @@ public class MdUnitMeasureServiceImpl implements IMdUnitMeasureService
     }
 
     /**
-     * 删除单位信息
+     * 删除计量单位管理信息
      * 
-     * @param measureId 单位主键
+     * @param measureId 计量单位管理主键
      * @return 结果
      */
     @Override

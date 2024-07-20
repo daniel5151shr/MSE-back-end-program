@@ -1,33 +1,30 @@
 package com.qst.mes.core.md.service.impl;
 
 import java.util.List;
-
-import com.qst.mes.common.constant.UserConstants;
 import com.qst.mes.common.utils.DateUtils;
-import com.qst.mes.common.utils.StringUtils;
-import com.qst.mes.core.md.service.IMdWorkstationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.qst.mes.core.md.mapper.MdWorkstationMapper;
 import com.qst.mes.core.md.domain.MdWorkstation;
+import com.qst.mes.core.md.service.IMdWorkstationService;
 
 /**
- * 工作站Service业务层处理
+ * 工作站管理Service业务层处理
  * 
  * @author yinjinlu
- * @date 2022-05-10
+ * @date 2024-07-14
  */
 @Service
-public class MdWorkstationServiceImpl implements IMdWorkstationService
+public class MdWorkstationServiceImpl implements IMdWorkstationService 
 {
     @Autowired
     private MdWorkstationMapper mdWorkstationMapper;
 
     /**
-     * 查询工作站
+     * 查询工作站管理
      * 
-     * @param workstationId 工作站主键
-     * @return 工作站
+     * @param workstationId 工作站管理主键
+     * @return 工作站管理
      */
     @Override
     public MdWorkstation selectMdWorkstationByWorkstationId(Long workstationId)
@@ -36,10 +33,10 @@ public class MdWorkstationServiceImpl implements IMdWorkstationService
     }
 
     /**
-     * 查询工作站列表
+     * 查询工作站管理列表
      * 
-     * @param mdWorkstation 工作站
-     * @return 工作站
+     * @param mdWorkstation 工作站管理
+     * @return 工作站管理
      */
     @Override
     public List<MdWorkstation> selectMdWorkstationList(MdWorkstation mdWorkstation)
@@ -47,30 +44,10 @@ public class MdWorkstationServiceImpl implements IMdWorkstationService
         return mdWorkstationMapper.selectMdWorkstationList(mdWorkstation);
     }
 
-    @Override
-    public String checkWorkStationCodeUnique(MdWorkstation mdWorkstation) {
-        MdWorkstation workstation = mdWorkstationMapper.checkWorkStationCodeUnique(mdWorkstation);
-        Long workstationId = mdWorkstation.getWorkstationId()==null? -1L:mdWorkstation.getWorkstationId();
-        if(StringUtils.isNotNull(workstation) && workstation.getWorkstationId().longValue() != workstationId.longValue()){
-            return UserConstants.NOT_UNIQUE;
-        }
-        return UserConstants.UNIQUE;
-    }
-
-    @Override
-    public String checkWorkStationNameUnique(MdWorkstation mdWorkstation) {
-        MdWorkstation workstation = mdWorkstationMapper.checkWorkStationNameUnique(mdWorkstation);
-        Long workstationId = mdWorkstation.getWorkstationId()==null? -1L:mdWorkstation.getWorkstationId();
-        if(StringUtils.isNotNull(workstation) && workstation.getWorkstationId().longValue() != workstationId.longValue()){
-            return UserConstants.NOT_UNIQUE;
-        }
-        return UserConstants.UNIQUE;
-    }
-
     /**
-     * 新增工作站
+     * 新增工作站管理
      * 
-     * @param mdWorkstation 工作站
+     * @param mdWorkstation 工作站管理
      * @return 结果
      */
     @Override
@@ -81,9 +58,9 @@ public class MdWorkstationServiceImpl implements IMdWorkstationService
     }
 
     /**
-     * 修改工作站
+     * 修改工作站管理
      * 
-     * @param mdWorkstation 工作站
+     * @param mdWorkstation 工作站管理
      * @return 结果
      */
     @Override
@@ -94,9 +71,9 @@ public class MdWorkstationServiceImpl implements IMdWorkstationService
     }
 
     /**
-     * 批量删除工作站
+     * 批量删除工作站管理
      * 
-     * @param workstationIds 需要删除的工作站主键
+     * @param workstationIds 需要删除的工作站管理主键
      * @return 结果
      */
     @Override
@@ -106,9 +83,9 @@ public class MdWorkstationServiceImpl implements IMdWorkstationService
     }
 
     /**
-     * 删除工作站信息
+     * 删除工作站管理信息
      * 
-     * @param workstationId 工作站主键
+     * @param workstationId 工作站管理主键
      * @return 结果
      */
     @Override
