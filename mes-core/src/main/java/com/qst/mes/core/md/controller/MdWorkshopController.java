@@ -23,9 +23,9 @@ import com.qst.mes.common.core.page.TableDataInfo;
 
 /**
  * 车间管理Controller
- * 
+ *
  * @author yinjinlu
- * @date 2024-07-14
+ * @date 2024-07-21
  */
 @RestController
 @RequestMapping("/mes/md/workshop")
@@ -40,6 +40,18 @@ public class MdWorkshopController extends BaseController
     @PreAuthorize("@ss.hasPermi('mes/md:workshop:list')")
     @GetMapping("/list")
     public TableDataInfo list(MdWorkshop mdWorkshop)
+    {
+        startPage();
+        List<MdWorkshop> list = mdWorkshopService.selectMdWorkshopList(mdWorkshop);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询所有车间管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('mes/md:workshop:listAll')")
+    @GetMapping("/listAll")
+    public TableDataInfo listAll(MdWorkshop mdWorkshop)
     {
         startPage();
         List<MdWorkshop> list = mdWorkshopService.selectMdWorkshopList(mdWorkshop);
@@ -96,7 +108,7 @@ public class MdWorkshopController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('mes/md:workshop:remove')")
     @Log(title = "车间管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{workshopIds}")
+    @DeleteMapping("/{workshopIds}")
     public AjaxResult remove(@PathVariable Long[] workshopIds)
     {
         return toAjax(mdWorkshopService.deleteMdWorkshopByWorkshopIds(workshopIds));

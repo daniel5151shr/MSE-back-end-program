@@ -23,9 +23,9 @@ import com.qst.mes.common.core.page.TableDataInfo;
 
 /**
  * 工作站管理Controller
- * 
+ *
  * @author yinjinlu
- * @date 2024-07-14
+ * @date 2024-07-21
  */
 @RestController
 @RequestMapping("/mes/md/workstation")
@@ -96,7 +96,7 @@ public class MdWorkstationController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('mes/md:workstation:remove')")
     @Log(title = "工作站管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{workstationIds}")
+    @DeleteMapping("/{workstationIds}")
     public AjaxResult remove(@PathVariable Long[] workstationIds)
     {
         return toAjax(mdWorkstationService.deleteMdWorkstationByWorkstationIds(workstationIds));

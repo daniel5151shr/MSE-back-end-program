@@ -23,9 +23,9 @@ import com.qst.mes.common.core.page.TableDataInfo;
 
 /**
  * 生产工序管理Controller
- * 
+ *
  * @author yinjinlu
- * @date 2024-07-14
+ * @date 2024-07-21
  */
 @RestController
 @RequestMapping("/mes/pro/process")
@@ -40,6 +40,18 @@ public class ProProcessController extends BaseController
     @PreAuthorize("@ss.hasPermi('mes/pro:process:list')")
     @GetMapping("/list")
     public TableDataInfo list(ProProcess proProcess)
+    {
+        startPage();
+        List<ProProcess> list = proProcessService.selectProProcessList(proProcess);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询所有生产工序管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('mes/pro:process:listAll')")
+    @GetMapping("/listAll")
+    public TableDataInfo listAll(ProProcess proProcess)
     {
         startPage();
         List<ProProcess> list = proProcessService.selectProProcessList(proProcess);
@@ -96,7 +108,7 @@ public class ProProcessController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('mes/pro:process:remove')")
     @Log(title = "生产工序管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{processIds}")
+    @DeleteMapping("/{processIds}")
     public AjaxResult remove(@PathVariable Long[] processIds)
     {
         return toAjax(proProcessService.deleteProProcessByProcessIds(processIds));
